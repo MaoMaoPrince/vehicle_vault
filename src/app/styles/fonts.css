@@ -1,0 +1,8 @@
+@font-face {
+  font-family: 'UKNumberPlate';
+  src: url('/fonts/CharlesWright-Bold.woff2') format('woff2'),
+       url('/fonts/CharlesWright-Bold.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+} 

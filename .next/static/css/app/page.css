@@ -1,0 +1,11 @@
+/*!**********************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[10].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[10].use[3]!./src/app/styles/fonts.css ***!
+  \**********************************************************************************************************************************************************************************************************************************************************************/
+@font-face {
+  font-family: 'UKNumberPlate';
+  src: url('/fonts/CharlesWright-Bold.woff2') format('woff2'),
+       url('/fonts/CharlesWright-Bold.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+} 
