@@ -2,6 +2,11 @@
 
 import React, { useState } from 'react'
 
+interface RegInputProps {
+  value?: string
+  onChange?: (value: string) => void
+}
+
 // UK reg format validation
 // Covers formats like:
 // AB12 ABC
@@ -18,16 +23,15 @@ const isValidUKReg = (reg: string) => {
   return ukRegexes.some(regex => regex.test(cleanReg))
 }
 
-export function RegInput() {
-  const [reg, setReg] = useState('')
+export function RegInput({ value, onChange }: RegInputProps) {
   const [isValid, setIsValid] = useState(true)
   const [isFocused, setIsFocused] = useState(false)
 
   const handleRegChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.toUpperCase()
-    setReg(value)
-    if (value) {
-      setIsValid(isValidUKReg(value))
+    const newValue = e.target.value.toUpperCase()
+    onChange?.(newValue)
+    if (newValue) {
+      setIsValid(isValidUKReg(newValue))
     } else {
       setIsValid(true)
     }
@@ -35,13 +39,13 @@ export function RegInput() {
 
   const handleFocus = () => {
     setIsFocused(true)
-    setReg('')
+    onChange?.('')
   }
 
   const handleBlur = () => {
     setIsFocused(false)
-    if (!reg) {
-      setReg('')
+    if (!value) {
+      onChange?.('')
     }
   }
 
@@ -55,11 +59,11 @@ export function RegInput() {
         {/* Registration Input */}
         <input
           type="text"
-          value={reg}
+          value={value || ''}
           onChange={handleRegChange}
           onFocus={handleFocus}
           onBlur={handleBlur}
-          placeholder={!isFocused && !reg ? "ENTER REG" : ""}
+          placeholder={!isFocused && !value ? "ENTER REG" : ""}
           maxLength={8}
           className={`w-full p-8 text-3xl font-bold text-center bg-yellow-300 placeholder-gray-600
             focus:outline-none focus:ring-2 ${isValid ? 'focus:ring-primary/50' : 'focus:ring-red-500'}
@@ -69,7 +73,7 @@ export function RegInput() {
           }}
         />
       </div>
-      {!isValid && reg && (
+      {!isValid && value && (
         <p className="absolute -bottom-6 left-0 text-red-500 text-sm">
           Please enter a valid UK registration
         </p>
