@@ -5,8 +5,7 @@ const nextConfig = {
   images: {
     remotePatterns: [],
     unoptimized: true
-  },
-  basePath: '/vehicle_vault',
+  }
 }
 
 module.exports = nextConfig 
