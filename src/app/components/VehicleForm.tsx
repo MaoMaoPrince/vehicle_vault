@@ -6,6 +6,7 @@ import { RegInput } from './RegInput'
 import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import ReactCanvasConfetti from 'react-canvas-confetti'
+import { Gauge, User, Mail, Phone, MapPin } from 'lucide-react'
 
 type FormData = {
   registration: string
@@ -198,24 +199,30 @@ export function VehicleForm() {
                 className="space-y-8"
               >
                 <h2 className="text-3xl font-bold text-center">Enter some details to get a quote today</h2>
-                <div className="space-y-6">
+                <div className="space-y-10">
                   <RegInput 
                     value={watch('registration')} 
                     onChange={(value) => setValue('registration', value)} 
                   />
-                  <input
-                    type="text"
-                    placeholder="Mileage"
-                    {...register('mileage', { required: true })}
-                    className="w-full p-6 text-xl rounded-xl border border-gray-300 focus:ring-2 focus:ring-primary/50 focus:outline-none placeholder-gray-400 shadow-sm"
-                  />
+                  <div className="relative w-full">
+                    <div className="absolute inset-y-0 left-6 flex items-center pointer-events-none">
+                      <Gauge className="text-blue-900 w-7 h-7" aria-label="Mileage" />
+                    </div>
+                    <input
+                      type="text"
+                      placeholder="Mileage"
+                      {...register('mileage', { required: true })}
+                      className="w-full py-6 px-16 text-xl text-center focus:ring-2 focus:ring-primary/50 focus:outline-none placeholder-gray-400 bg-white rounded-xl shadow-sm border border-gray-300"
+                      style={{ minWidth: 0 }}
+                    />
+                  </div>
                   {apiError && (
                     <div className="text-red-500 text-sm">{apiError}</div>
                   )}
                   <button
                     type="submit"
                     disabled={isLoading}
-                    className={`w-full bg-blue-500 text-white py-6 px-8 rounded-xl text-xl font-semibold transition-colors shadow-sm
+                    className={`w-full bg-blue-500 text-white py-5 px-8 rounded-xl text-lg font-semibold transition-colors shadow-sm mt-2
                       ${isLoading ? 'opacity-75 cursor-not-allowed' : 'hover:bg-blue-600'}`}
                   >
                     {isLoading ? (
@@ -325,31 +332,54 @@ export function VehicleForm() {
                 className="space-y-8"
               >
                 <h2 className="text-3xl font-bold text-center">Enter some details about yourself</h2>
-                <div className="space-y-4">
-                  <input
-                    type="text"
-                    placeholder="Name"
-                    {...register('name', { required: true })}
-                    className="w-full p-6 text-xl rounded-xl border border-gray-300 focus:ring-2 focus:ring-primary/50 focus:outline-none placeholder-gray-400 shadow-sm"
-                  />
-                  <input
-                    type="email"
-                    placeholder="Email"
-                    {...register('email', { required: true })}
-                    className="w-full p-6 text-xl rounded-xl border border-gray-300 focus:ring-2 focus:ring-primary/50 focus:outline-none placeholder-gray-400 shadow-sm"
-                  />
-                  <input
-                    type="tel"
-                    placeholder="Phone Number"
-                    {...register('phone', { required: true })}
-                    className="w-full p-6 text-xl rounded-xl border border-gray-300 focus:ring-2 focus:ring-primary/50 focus:outline-none placeholder-gray-400 shadow-sm"
-                  />
-                  <input
-                    type="text"
-                    placeholder="Post Code"
-                    {...register('postcode', { required: true })}
-                    className="w-full p-6 text-xl rounded-xl border border-gray-300 focus:ring-2 focus:ring-primary/50 focus:outline-none placeholder-gray-400 shadow-sm"
-                  />
+                <div className="space-y-6">
+                  <div className="relative w-full">
+                    <div className="absolute inset-y-0 left-6 flex items-center pointer-events-none">
+                      <User className="text-blue-900 w-7 h-7" aria-label="Name" />
+                    </div>
+                    <input
+                      type="text"
+                      placeholder="Name"
+                      {...register('name', { required: true })}
+                      className="w-full py-6 px-16 text-xl text-center focus:ring-2 focus:ring-primary/50 focus:outline-none placeholder-gray-400 bg-white rounded-xl shadow-sm border border-gray-300"
+                    />
+                  </div>
+
+                  <div className="relative w-full">
+                    <div className="absolute inset-y-0 left-6 flex items-center pointer-events-none">
+                      <Mail className="text-blue-900 w-7 h-7" aria-label="Email" />
+                    </div>
+                    <input
+                      type="email"
+                      placeholder="Email"
+                      {...register('email', { required: true })}
+                      className="w-full py-6 px-16 text-xl text-center focus:ring-2 focus:ring-primary/50 focus:outline-none placeholder-gray-400 bg-white rounded-xl shadow-sm border border-gray-300"
+                    />
+                  </div>
+
+                  <div className="relative w-full">
+                    <div className="absolute inset-y-0 left-6 flex items-center pointer-events-none">
+                      <Phone className="text-blue-900 w-7 h-7" aria-label="Phone Number" />
+                    </div>
+                    <input
+                      type="tel"
+                      placeholder="Phone Number"
+                      {...register('phone', { required: true })}
+                      className="w-full py-6 px-16 text-xl text-center focus:ring-2 focus:ring-primary/50 focus:outline-none placeholder-gray-400 bg-white rounded-xl shadow-sm border border-gray-300"
+                    />
+                  </div>
+
+                  <div className="relative w-full">
+                    <div className="absolute inset-y-0 left-6 flex items-center pointer-events-none">
+                      <MapPin className="text-blue-900 w-7 h-7" aria-label="Post Code" />
+                    </div>
+                    <input
+                      type="text"
+                      placeholder="Post Code"
+                      {...register('postcode', { required: true })}
+                      className="w-full py-6 px-16 text-xl text-center focus:ring-2 focus:ring-primary/50 focus:outline-none placeholder-gray-400 bg-white rounded-xl shadow-sm border border-gray-300"
+                    />
+                  </div>
                   {submitError && (
                     <div className="text-red-500 text-sm">{submitError}</div>
                   )}
