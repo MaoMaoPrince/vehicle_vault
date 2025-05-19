@@ -28,17 +28,6 @@ export default function Home() {
       <div className="flex-1 flex items-center justify-center">
         <VehicleForm />
       </div>
-      {/* Decorative car emoji at the bottom, clipped by the page edge */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none select-none w-full flex justify-center absolute left-0 bottom-0 z-10 text-[120px] md:text-[180px]"
-        style={{
-          lineHeight: 1,
-          transform: 'translateY(30%)',
-        }}
-      >
-        <span role="img" aria-label="car">🚗</span>
-      </div>
     </main>
   )
 }
