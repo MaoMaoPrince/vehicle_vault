@@ -67,9 +67,12 @@ export function RegInput({ value, onChange }: RegInputProps) {
           maxLength={8}
           className={`w-full p-8 text-3xl font-bold text-center bg-yellow-300 placeholder-gray-600
             focus:outline-none focus:ring-2 ${isValid ? 'focus:ring-primary/50' : 'focus:ring-red-500'}
-            font-number-plate tracking-widest uppercase`}
+            tracking-widest uppercase`}
           style={{
-            fontFamily: 'UKNumberPlate, sans-serif',
+            fontFamily: 'CharlesWright, sans-serif',
+            letterSpacing: '0.1em',
+            fontSize: '2.5rem',
+            lineHeight: '1.2'
           }}
         />
       </div>
