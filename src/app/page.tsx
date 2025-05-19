@@ -7,7 +7,8 @@ export default function Home() {
     <main className="min-h-screen bg-white flex flex-col">
       {/* Navigation */}
       <nav className="bg-white border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Make nav container full width and left-aligned */}
+        <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             <div className="flex-shrink-0">
               <Image
@@ -26,6 +27,17 @@ export default function Home() {
       {/* Form Section */}
       <div className="flex-1 flex items-center justify-center">
         <VehicleForm />
+      </div>
+      {/* Decorative car emoji at the bottom, clipped by the page edge */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none select-none w-full flex justify-center absolute left-0 bottom-0 z-10 text-[120px] md:text-[180px]"
+        style={{
+          lineHeight: 1,
+          transform: 'translateY(30%)',
+        }}
+      >
+        <span role="img" aria-label="car">🚗</span>
       </div>
     </main>
   )
