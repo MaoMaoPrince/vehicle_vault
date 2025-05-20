@@ -1,9 +1,18 @@
 import { NextResponse } from 'next/server'
 
-const DVLA_API_KEY = 'OiQulXE0N92t1hVsGrVeP95TZzIUpeihy3Fs0NPc'
+// The API key will now be read from an environment variable
+const DVLA_API_KEY = process.env.DVLA_API_KEY
 
 export async function POST(request: Request) {
   try {
+    if (!DVLA_API_KEY) {
+      console.error('DVLA_API_KEY is not set in environment variables.')
+      return NextResponse.json(
+        { error: 'Server configuration error: API key missing.' },
+        { status: 500 }
+      )
+    }
+
     const body = await request.json()
     const { registrationNumber } = body
 

@@ -8,7 +8,6 @@ import { Step1Form } from './form-steps/step1-form'
 import { Step2Confirmation } from './form-steps/step2-confirmation'
 import { Step3UserDetails } from './form-steps/step3-user-details'
 import { Step4ThankYou } from './form-steps/step4-thank-you'
-import getConfig from 'next/config'
 
 function generateId() {
   const charset = '23456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
@@ -49,9 +48,6 @@ type VehicleDetails = {
   co2Emissions: number
   monthOfFirstRegistration: string
 }
-
-const { publicRuntimeConfig } = getConfig()
-const basePath = publicRuntimeConfig?.basePath || ''
 
 const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyi6grgsTSwfRyBmCZvWV89i1H4ov38fbycP8CbNeCh7_RvoHxnH-VRdEGIm7luWykz/exec'
 
@@ -114,7 +110,7 @@ export function VehicleForm() {
     setIsLoading(true)
     setApiError(null)
     try {
-      const response = await fetch(`${basePath}/api/vehicle`, {
+      const response = await fetch('/api/vehicle', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
