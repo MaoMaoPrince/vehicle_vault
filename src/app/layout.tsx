@@ -16,8 +16,8 @@ const spaceGrotesk = localFont({
 })
 
 export const metadata: Metadata = {
-  title: 'Vehicle Vault',
-  description: 'Secure and manage your vehicle data',
+  title: 'webuynecars.com',
+  description: 'we buy north east cars get your free evaluation today',
 }
 
 export default function RootLayout({
