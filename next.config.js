@@ -2,6 +2,7 @@
 const nextConfig = {
   output: 'export',
   basePath: '/vehicle_vault',
+  assetPrefix: '/vehicle_vault',
   reactStrictMode: true,
   images: {
     remotePatterns: [],
