@@ -49,6 +49,7 @@ export function RegInput({ value, onChange }: RegInputProps) {
     }
   }
 
+  
   return (
     <div className="relative">
       <div className="flex rounded-xl overflow-hidden shadow-lg">
