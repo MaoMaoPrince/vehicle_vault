@@ -53,13 +53,13 @@ const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyi6grgsTSwfR
 
 export function VehicleForm() {
   const [step, setStep] = useState(1)
-  const [step1Data, setStep1Data] = useState<Step1Data>({ registration: 'NX63YTU', mileage: '8000' })
+  const [step1Data, setStep1Data] = useState<Step1Data>({ registration: '', mileage: '' })
   const [vehicleDetails, setVehicleDetails] = useState<VehicleDetails | null>(null)
   const [referenceId, setReferenceId] = useState<string>('')
   const [isLoading, setIsLoading] = useState(false)
   const [apiError, setApiError] = useState<string | null>(null)
   const { register, handleSubmit, watch, setValue, reset } = useForm<FormData>({
-    defaultValues: { registration: 'NX63YTU', mileage: '8000' }
+    defaultValues: { registration: '', mileage: '' }
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
