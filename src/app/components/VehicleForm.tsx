@@ -8,6 +8,7 @@ import { Step1Form } from './form-steps/step1-form'
 import { Step2Confirmation } from './form-steps/step2-confirmation'
 import { Step3UserDetails } from './form-steps/step3-user-details'
 import { Step4ThankYou } from './form-steps/step4-thank-you'
+import getConfig from 'next/config'
 
 function generateId() {
   const charset = '23456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
@@ -49,9 +50,10 @@ type VehicleDetails = {
   monthOfFirstRegistration: string
 }
 
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyi6grgsTSwfRyBmCZvWV89i1H4ov38fbycP8CbNeCh7_RvoHxnH-VRdEGIm7luWykz/exec'
+const { publicRuntimeConfig } = getConfig()
+const basePath = publicRuntimeConfig?.basePath || ''
 
-const DVLA_API_KEY = 'OiQulXE0N92t1hVsGrVeP95TZzIUpeihy3Fs0NPc'; // WARNING: Exposing API key in client-side code.
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyi6grgsTSwfRyBmCZvWV89i1H4ov38fbycP8CbNeCh7_RvoHxnH-VRdEGIm7luWykz/exec'
 
 export function VehicleForm() {
   const [step, setStep] = useState(1)
@@ -112,36 +114,17 @@ export function VehicleForm() {
     setIsLoading(true)
     setApiError(null)
     try {
-      const response = await fetch('https://driver-vehicle-licensing.api.gov.uk/vehicle-enquiry/v1/vehicles', {
+      const response = await fetch(`${basePath}/api/vehicle`, {
         method: 'POST',
         headers: {
-          'x-api-key': DVLA_API_KEY, // Using the API key directly
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ registrationNumber: registration }),
       })
 
       if (!response.ok) {
-        // Attempt to parse error as JSON, but provide a fallback
-        let errorDetails = `Failed to fetch vehicle details (HTTP ${response.status})`;
-        try {
-          const errorData = await response.json();
-          // DVLA specific error structure might be in errorData.errors array
-          if (errorData.errors && Array.isArray(errorData.errors) && errorData.errors.length > 0) {
-            errorDetails = errorData.errors.map((err: { title: string; detail: string; }) => err.detail || err.title).join(', ');
-          } else if (errorData.error) {
-            errorDetails = errorData.error;
-          } else if (errorData.message) {
-            errorDetails = errorData.message;
-          }
-        } catch (e) {
-          // If response isn't JSON, use the text content
-          const textError = await response.text();
-          console.error('DVLA API non-JSON error response:', textError);
-          // You might want to give a more generic error to the user here
-          errorDetails = `Error from DVLA API: ${response.statusText}. Please check the registration.`;
-        }
-        throw new Error(errorDetails)
+        const error = await response.json()
+        throw new Error(error.error || 'Failed to fetch vehicle details')
       }
 
       const data = await response.json()
@@ -149,7 +132,7 @@ export function VehicleForm() {
       setStep(2) // Move to confirmation step
     } catch (error) {
       console.error('Vehicle lookup error:', error)
-      setApiError(error instanceof Error ? error.message : 'An unknown error occurred during vehicle lookup.')
+      setApiError(error instanceof Error ? error.message : 'Failed to find vehicle details. Please check the registration number and try again.')
     } finally {
       setIsLoading(false)
     }
