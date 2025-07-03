@@ -8,8 +8,8 @@ import { Step1Form } from './form-steps/step1-form'
 import { Step2Confirmation } from './form-steps/step2-confirmation'
 import { Step3UserDetails } from './form-steps/step3-user-details'
 import { Step4ThankYou } from './form-steps/step4-thank-you'
-import { gtagEvent } from '../utils/gtag'
-import { plateConfigs } from '../config/plate-config'
+import { gtagEvent } from '../../utils/gtag'
+import { plateConfigs } from '../../config/plate-config'
 
 function generateId() {
   const charset = '23456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
@@ -71,6 +71,9 @@ export function VehicleForm({ country }: VehicleFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
   const confettiRef = useRef<((opts: any) => void) | null>(null)
+
+  // Temporary dropdown for developer override (non-production only)
+  const isDev = process.env.NODE_ENV !== 'production'
 
   const config = plateConfigs[localCountry] || plateConfigs['GB']
 
@@ -219,6 +222,15 @@ export function VehicleForm({ country }: VehicleFormProps) {
     }
   }, [step, setValue, step1Data])
 
+  // Track country override
+  React.useEffect(() => {
+    gtagEvent({
+      action: 'country_override',
+      category: 'UX',
+      label: localCountry
+    })
+  }, [localCountry])
+
   // Track step changes
   React.useEffect(() => {
     gtagEvent({
@@ -230,6 +242,20 @@ export function VehicleForm({ country }: VehicleFormProps) {
 
   return (
     <div className="flex flex-col w-full max-w-3xl mx-auto pb-8">
+      {isDev && (
+        <div className="mb-2 flex justify-center">
+          <label htmlFor="country-override" className="mr-2 font-medium">Country override:</label>
+          <select
+            id="country-override"
+            value={localCountry}
+            onChange={e => setLocalCountry(e.target.value)}
+            className="border rounded px-2 py-1"
+          >
+            <option value="GB">UK</option>
+            <option value="IE">Ireland</option>
+          </select>
+        </div>
+      )}
       <div className={`mb-4 text-center font-bold text-xl ${config.accentTextColor}`}>
         {localCountry === 'IE' ? 'Irish Plate Flow' : 'UK Plate Flow'}
       </div>
