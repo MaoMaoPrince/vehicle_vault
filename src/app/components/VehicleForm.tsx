@@ -8,8 +8,8 @@ import { Step1Form } from './form-steps/step1-form'
 import { Step2Confirmation } from './form-steps/step2-confirmation'
 import { Step3UserDetails } from './form-steps/step3-user-details'
 import { Step4ThankYou } from './form-steps/step4-thank-you'
-import { gtagEvent } from '../../utils/gtag'
-import { plateConfigs } from '../../config/plate-config'
+import { gtagEvent } from '../utils/gtag'
+import { plateConfigs } from '../config/plate-config'
 
 function generateId() {
   const charset = '23456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
