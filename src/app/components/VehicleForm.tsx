@@ -256,9 +256,6 @@ export function VehicleForm({ country }: VehicleFormProps) {
           </select>
         </div>
       )}
-      <div className={`mb-4 text-center font-bold text-xl ${config.accentTextColor}`}>
-        {localCountry === 'IE' ? 'Irish Plate Flow' : 'UK Plate Flow'}
-      </div>
       <div className="flex flex-col items-center w-full">
         <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-xl mx-auto">
           <AnimatePresence mode="wait">
