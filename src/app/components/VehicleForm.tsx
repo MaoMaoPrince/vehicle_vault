@@ -10,6 +10,7 @@ import { Step3UserDetails } from './form-steps/step3-user-details'
 import { Step4ThankYou } from './form-steps/step4-thank-you'
 import { gtagEvent } from '../utils/gtag'
 import { plateConfigs } from '../config/plate-config'
+import { LocationTagline } from './hero-headline/location-tagline'
 
 function generateId() {
   const charset = '23456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
@@ -293,6 +294,11 @@ export function VehicleForm({ country }: VehicleFormProps) {
         </form>
       </div>
 
+      {localCountry === 'IE' && (
+        <div className="flex justify-center mt-8">
+          <LocationTagline country={localCountry} />
+        </div>
+      )}
       <ReactCanvasConfetti
         onInit={getInstance}
         style={{
