@@ -3,10 +3,19 @@ import { VehicleForm } from './components/VehicleForm'
 import './styles/fonts.css'
 import { cookies } from 'next/headers'
 
-export default async function Home() {
+interface HomeProps {
+  searchParams: { [key: string]: string | string[] | undefined }
+}
+
+export default async function Home({ searchParams }: HomeProps) {
   const cookiesStore = await cookies()
-  const country = cookiesStore.get('country')?.value || 'GB'
-  const logoSrc = country === 'IE' ? '/logo-ireland.svg' : '/logo.svg'
+  const countryCookie = cookiesStore.get('country')?.value || 'GB'
+  // Use ?loc= param if present
+  let urlCountry = countryCookie
+  if (searchParams.loc && typeof searchParams.loc === 'string') {
+    urlCountry = searchParams.loc.toUpperCase()
+  }
+  const logoSrc = urlCountry === 'IE' ? '/logo-ireland.svg' : '/logo.svg'
   return (
     <main className="min-h-screen bg-white flex flex-col relative overflow-hidden">
       {/* Navigation */}
@@ -36,7 +45,7 @@ export default async function Home() {
 
       {/* Form Section - VehicleForm now handles its own max-width and internal padding */}
       <div className="flex-1 flex flex-col items-center px-4">
-        <VehicleForm country={country} />
+        <VehicleForm country={urlCountry} />
       </div>
 
       {/* Car Emoji at Bottom Center, clipped and non-interactive */}
