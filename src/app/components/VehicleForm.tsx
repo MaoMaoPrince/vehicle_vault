@@ -8,6 +8,9 @@ import { Step1Form } from './form-steps/step1-form'
 import { Step2Confirmation } from './form-steps/step2-confirmation'
 import { Step3UserDetails } from './form-steps/step3-user-details'
 import { Step4ThankYou } from './form-steps/step4-thank-you'
+import { gtagEvent } from '../utils/gtag'
+import { plateConfigs } from '../config/plate-config'
+import { LocationHeadline } from './hero-headline/location-headline'
 
 function generateId() {
   const charset = '23456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
@@ -51,7 +54,12 @@ type VehicleDetails = {
 
 const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyi6grgsTSwfRyBmCZvWV89i1H4ov38fbycP8CbNeCh7_RvoHxnH-VRdEGIm7luWykz/exec'
 
-export function VehicleForm() {
+interface VehicleFormProps {
+  country: string
+}
+
+export function VehicleForm({ country }: VehicleFormProps) {
+  const [localCountry, setLocalCountry] = useState(country)
   const [step, setStep] = useState(1)
   const [step1Data, setStep1Data] = useState<Step1Data>({ registration: '', mileage: '' })
   const [vehicleDetails, setVehicleDetails] = useState<VehicleDetails | null>(null)
@@ -64,6 +72,11 @@ export function VehicleForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
   const confettiRef = useRef<((opts: any) => void) | null>(null)
+
+  // Temporary dropdown for developer override (non-production only)
+  const isDev = process.env.NODE_ENV !== 'production'
+
+  const config = plateConfigs[localCountry] || plateConfigs['GB']
 
   const getInstance = useCallback((confetti: { confetti: (opts: any) => void }) => {
     confettiRef.current = confetti.confetti
@@ -78,33 +91,35 @@ export function VehicleForm() {
   }, [])
 
   const fireConfetti = useCallback(() => {
+    const colors = config.confettiColors
     makeShot(0.25, {
       spread: 26,
-      startVelocity: 55
+      startVelocity: 55,
+      colors
     })
-
     makeShot(0.2, {
-      spread: 60
+      spread: 60,
+      colors
     })
-
     makeShot(0.35, {
       spread: 100,
       decay: 0.91,
-      scalar: 0.8
+      scalar: 0.8,
+      colors
     })
-
     makeShot(0.1, {
       spread: 120,
       startVelocity: 25,
       decay: 0.92,
-      scalar: 1.2
+      scalar: 1.2,
+      colors
     })
-
     makeShot(0.1, {
       spread: 120,
-      startVelocity: 45
+      startVelocity: 45,
+      colors
     })
-  }, [makeShot])
+  }, [makeShot, config.confettiColors])
   
   const lookupVehicle = async (registration: string) => {
     setIsLoading(true)
@@ -135,7 +150,20 @@ export function VehicleForm() {
   }
 
   const onSubmit = async (data: FormData) => {
+    gtagEvent({
+      action: 'form_submit',
+      category: 'UX',
+      label: `Step ${step}`
+    })
     if (step === 1) {
+      if (localCountry === 'IE') {
+        setStep1Data({
+          registration: data.registration || '',
+          mileage: data.mileage || ''
+        })
+        setStep(3) // Go directly to user details for IE
+        return
+      }
       await lookupVehicle(data.registration || '')
       setStep1Data({
         registration: data.registration || '',
@@ -195,8 +223,44 @@ export function VehicleForm() {
     }
   }, [step, setValue, step1Data])
 
+  // Track country override
+  React.useEffect(() => {
+    gtagEvent({
+      action: 'country_override',
+      category: 'UX',
+      label: localCountry
+    })
+  }, [localCountry])
+
+  // Track step changes
+  React.useEffect(() => {
+    gtagEvent({
+      action: 'form_step',
+      category: 'UX',
+      label: `Step ${step}`
+    })
+  }, [step])
+
   return (
     <div className="flex flex-col w-full max-w-3xl mx-auto pb-8">
+      <LocationHeadline country={localCountry} />
+      {isDev && (
+        <div className="mb-2 flex justify-center">
+          <label htmlFor="country-override" className="mr-2 font-medium">Country override:</label>
+          <select
+            id="country-override"
+            value={localCountry}
+            onChange={e => setLocalCountry(e.target.value)}
+            className="border rounded px-2 py-1"
+          >
+            <option value="GB">UK</option>
+            <option value="IE">Ireland</option>
+          </select>
+        </div>
+      )}
+      <div className={`mb-4 text-center font-bold text-xl ${config.accentTextColor}`}>
+        {localCountry === 'IE' ? 'Irish Plate Flow' : 'UK Plate Flow'}
+      </div>
       <div className="flex flex-col items-center w-full">
         <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-xl mx-auto">
           <AnimatePresence mode="wait">
@@ -208,17 +272,16 @@ export function VehicleForm() {
                 isLoading={isLoading}
                 apiError={apiError}
                 onSubmit={handleSubmit(onSubmit)}
+                country={localCountry}
               />
             )}
-            
-            {step === 2 && vehicleDetails && (
+            {step === 2 && localCountry !== 'IE' && vehicleDetails && (
               <Step2Confirmation
                 vehicleDetails={vehicleDetails}
                 onBack={() => setStep(1)}
                 onContinue={() => handleSubmit(() => setStep(3))()}
               />
             )}
-            
             {step === 3 && (
               <Step3UserDetails
                 register={register}
@@ -226,7 +289,6 @@ export function VehicleForm() {
                 submitError={submitError}
               />
             )}
-            
             {step === 4 && (
               <Step4ThankYou
                 referenceId={referenceId}
