@@ -3,7 +3,7 @@
 import { RegInput } from '../RegInput'
 import { Gauge } from 'lucide-react'
 import { UseFormRegister, UseFormWatch, UseFormSetValue } from 'react-hook-form'
-import { HeroHeadline } from '../hero-headline/hero-headline'
+import { LocationHeadline } from '../hero-headline/location-headline'
 import { motion } from 'framer-motion'
 import { fadeVariants } from '@/app/utils/animations'
 import { styles } from '@/app/components/ui/styles'
@@ -47,12 +47,8 @@ export function Step1Form({
       transition={{ duration: 0.3 }}
       className={`${styles.container.section} flex flex-col items-center`}
     >
-      <HeroHeadline
-        textStart="we buy "
-        textHighlight="north east"
-        textEnd=" cars"
-        subtext="Enter some details to get a quote today"
-      />
+      <LocationHeadline country={country} />
+      <div className="text-lg text-gray-500 font-medium mt-2 mb-4">Enter some details to get a quote today</div>
       
       <div className={styles.container.formControls}>
         <RegInput 
