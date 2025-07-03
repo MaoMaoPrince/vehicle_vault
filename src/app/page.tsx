@@ -1,8 +1,12 @@
 import Image from 'next/image'
 import { VehicleForm } from './components/VehicleForm'
 import './styles/fonts.css'
+import { cookies } from 'next/headers'
 
-export default function Home() {
+export default async function Home() {
+  const cookiesStore = await cookies()
+  const country = cookiesStore.get('country')?.value || 'GB'
+  const logoSrc = country === 'IE' ? '/logo-ireland.svg' : '/logo.svg'
   return (
     <main className="min-h-screen bg-white flex flex-col relative overflow-hidden">
       {/* Navigation */}
@@ -12,7 +16,7 @@ export default function Home() {
           <div className="flex justify-between items-center h-20">
             <div className="flex-shrink-0">
               <Image
-                src="/logo.svg"
+                src={logoSrc}
                 alt="Vehicle Vault"
                 width={180}
                 height={60}
@@ -32,7 +36,7 @@ export default function Home() {
 
       {/* Form Section - VehicleForm now handles its own max-width and internal padding */}
       <div className="flex-1 flex flex-col items-center px-4">
-        <VehicleForm />
+        <VehicleForm country={country} />
       </div>
 
       {/* Car Emoji at Bottom Center, clipped and non-interactive */}

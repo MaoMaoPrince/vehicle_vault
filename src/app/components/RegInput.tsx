@@ -1,40 +1,23 @@
 'use client'
 
 import React, { useState } from 'react'
+import { plateConfigs } from '../config/plate-config'
 
 interface RegInputProps {
   value?: string
   onChange?: (value: string) => void
+  country: string
 }
 
-// UK reg format validation
-// Covers formats like:
-// AB12 ABC
-// A123 ABC
-// ABC 123A
-// MOSSY 9
-// etc.
-const isValidUKReg = (reg: string) => {
-  const ukRegexes = [
-    /^[A-Z]{1,3}[0-9]{1,4}[A-Z]{0,3}$/, // Standard format
-    /^[A-Z]{4,6}\s?[0-9]{1}$/ // MOSSY 9 style format
-  ]
-  const cleanReg = reg.replace(/\s+/g, ' ').trim().toUpperCase()
-  return ukRegexes.some(regex => regex.test(cleanReg))
-}
-
-export function RegInput({ value, onChange }: RegInputProps) {
+export function RegInput({ value, onChange, country }: RegInputProps) {
+  const config = plateConfigs[country] || plateConfigs['GB']
   const [isValid, setIsValid] = useState(true)
   const [isFocused, setIsFocused] = useState(false)
 
   const handleRegChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value.toUpperCase()
     onChange?.(newValue)
-    if (newValue) {
-      setIsValid(isValidUKReg(newValue))
-    } else {
-      setIsValid(true)
-    }
+    setIsValid(config.validate(newValue))
   }
 
   const handleFocus = () => {
@@ -44,18 +27,15 @@ export function RegInput({ value, onChange }: RegInputProps) {
 
   const handleBlur = () => {
     setIsFocused(false)
-    if (!value) {
-      onChange?.('')
-    }
+    if (!value) onChange?.('')
   }
 
-  
   return (
     <div className="relative">
-      <div className="flex rounded-xl overflow-hidden shadow-lg">
-        {/* GB Badge */}
-        <div className="bg-[#1e2b87] text-white px-6 flex items-center justify-center">
-          <span className="text-2xl font-bold">GB</span>
+      <div className="flex shadow-lg rounded-xl overflow-hidden">
+        {/* Country Badge */}
+        <div className={`${config.badgeBg} text-white px-6 flex items-center justify-center rounded-l-xl`}>
+          <span className="text-2xl font-bold">{config.badge}</span>
         </div>
         {/* Registration Input */}
         <input
@@ -64,11 +44,12 @@ export function RegInput({ value, onChange }: RegInputProps) {
           onChange={handleRegChange}
           onFocus={handleFocus}
           onBlur={handleBlur}
-          placeholder={!isFocused && !value ? "ENTER REG" : ""}
-          maxLength={8}
-          className={`w-full p-8 text-3xl font-bold text-center bg-yellow-300 placeholder-gray-600
+          placeholder={!isFocused && !value ? config.placeholder : ''}
+          maxLength={12}
+          className={`w-full p-8 text-3xl font-bold text-center placeholder-gray-600
             focus:outline-none focus:ring-2 ${isValid ? 'focus:ring-primary/50' : 'focus:ring-red-500'}
-            tracking-widest uppercase`}
+            tracking-widest uppercase ${config.textColor} ${config.plateStyle} rounded-r-xl
+            ${config.plateBorder ? `border-4 ${config.plateBorder} border-l-0` : ''}`}
           style={{
             fontFamily: 'CharlesWright, sans-serif',
             letterSpacing: '0.1em',
@@ -77,9 +58,9 @@ export function RegInput({ value, onChange }: RegInputProps) {
           }}
         />
       </div>
-      {!isValid && value && (
+      { !isValid && value && (
         <p className="absolute -bottom-6 left-0 text-red-500 text-sm">
-          Please enter a valid UK registration
+          {config.validationMsg}
         </p>
       )}
     </div>

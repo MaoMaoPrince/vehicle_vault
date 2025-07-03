@@ -9,6 +9,7 @@ interface HeroHeadlineProps {
   subtext?: string
   textClassName?: string
   subtextClassName?: string
+  highlightColor?: string
 }
 
 export function HeroHeadline({
@@ -31,14 +32,15 @@ export function HeroHeadline({
     theme.colors.neutral.muted, 
     'mb-6 text-center'
   ),
+  highlightColor = theme.colors.brand.red
 }: HeroHeadlineProps) {
   return (
     <>
       <h1 className={textClassName}>
         {textStart}
-        <span className={theme.colors.brand.red}>{textHighlight}</span>
+        <span className={highlightColor}>{textHighlight}</span>
         {textEnd}
-        {textHighlight2 && <span className={theme.colors.brand.red}>{textHighlight2}</span>}
+        {textHighlight2 && <span className={highlightColor}>{textHighlight2}</span>}
       </h1>
       {subtext && (
         <p className={subtextClassName}>

@@ -7,6 +7,7 @@ import { HeroHeadline } from '../hero-headline/hero-headline'
 import { motion } from 'framer-motion'
 import { fadeVariants } from '@/app/utils/animations'
 import { styles } from '@/app/components/ui/styles'
+import { plateConfigs } from '@/app/config/plate-config'
 
 interface FormData {
   registration: string
@@ -24,6 +25,7 @@ interface Step1FormProps {
   isLoading: boolean
   apiError: string | null
   onSubmit: () => void
+  country: string
 }
 
 export function Step1Form({
@@ -32,7 +34,8 @@ export function Step1Form({
   setValue,
   isLoading,
   apiError,
-  onSubmit
+  onSubmit,
+  country
 }: Step1FormProps) {
   return (
     <motion.div
@@ -55,6 +58,7 @@ export function Step1Form({
         <RegInput 
           value={watch('registration')} 
           onChange={(value) => setValue('registration', value)} 
+          country={country}
         />
         <div className="relative w-full">
           <div className="absolute inset-y-0 left-6 flex items-center pointer-events-none">

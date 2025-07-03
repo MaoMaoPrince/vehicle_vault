@@ -2,6 +2,9 @@ import './globals.css'
 import type { Metadata } from 'next'
 import React from 'react'
 import localFont from 'next/font/local'
+import Script from 'next/script'
+import { cookies } from 'next/headers'
+import { plateConfigs } from './config/plate-config'
 
 const lexend = localFont({
   src: '../../public/fonts/LexendDeca-Bold.ttf',
@@ -20,14 +23,44 @@ export const metadata: Metadata = {
   description: 'we buy north east cars get your free evaluation today',
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const cookiesStore = await cookies()
+  const country = cookiesStore.get('country')?.value || 'GB'
+  const config = plateConfigs[country] || plateConfigs['GB']
   return (
     <html lang="en">
-      <body className={`min-h-screen ${lexend.variable} ${spaceGrotesk.variable}`}>{children}</body>
+      <head>
+        {/* Google Analytics */}
+        {process.env.NODE_ENV === 'production' && (
+          <>
+            <Script
+              strategy="afterInteractive"
+              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+            />
+            <Script
+              id="ga-init"
+              strategy="afterInteractive"
+              dangerouslySetInnerHTML={{
+                __html: `
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag(){dataLayer.push(arguments);}
+                  gtag('js', new Date());
+                  gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}', {
+                    page_path: window.location.pathname,
+                  });
+                `,
+              }}
+            />
+          </>
+        )}
+      </head>
+      <body className={`min-h-screen ${lexend.variable} ${spaceGrotesk.variable}`}>
+        {children}
+      </body>
     </html>
   )
 }
