@@ -11,7 +11,7 @@ export default async function Page({ searchParams }: any) {
   if (searchParams?.loc && typeof searchParams.loc === 'string') {
     urlCountry = searchParams.loc.toUpperCase()
   }
-  const logoSrc = urlCountry === 'IE' ? '/logo-ireland.svg' : '/logo.svg'
+  const logoSrc = '/logo.svg'
   return (
     <main className="min-h-screen bg-white flex flex-col relative overflow-hidden">
       {/* Navigation */}
