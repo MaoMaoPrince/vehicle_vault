@@ -3,16 +3,12 @@ import { VehicleForm } from './components/VehicleForm'
 import './styles/fonts.css'
 import { cookies } from 'next/headers'
 
-interface HomeProps {
-  searchParams: { [key: string]: string | string[] | undefined }
-}
-
-export default async function Home({ searchParams }: HomeProps) {
+export default async function Page({ searchParams }: any) {
   const cookiesStore = await cookies()
   const countryCookie = cookiesStore.get('country')?.value || 'GB'
   // Use ?loc= param if present
   let urlCountry = countryCookie
-  if (searchParams.loc && typeof searchParams.loc === 'string') {
+  if (searchParams?.loc && typeof searchParams.loc === 'string') {
     urlCountry = searchParams.loc.toUpperCase()
   }
   const logoSrc = urlCountry === 'IE' ? '/logo-ireland.svg' : '/logo.svg'
