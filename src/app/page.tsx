@@ -23,7 +23,7 @@ export default async function Page({ searchParams }: any) {
             <div className="flex-shrink-0">
               <Image
                 src={logoSrc}
-                alt="Vehicle Vault"
+                alt="logo"
                 width={180}
                 height={60}
                 className="h-12 w-auto"
