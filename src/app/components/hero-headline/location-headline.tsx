@@ -14,7 +14,7 @@ export function LocationHeadline({ country }: LocationHeadlineProps) {
 
   if (country === 'IE') {
     return (
-      <h1 className="font-bold text-5xl flex flex-wrap gap-x-2">
+      <h1 className="font-bold text-5xl text-center font-lexend">
         <span className={text_color}>we buy</span>
         <span className={highlight_color}>Ireland</span>
         <span className={text_color}>cars</span>
@@ -23,7 +23,7 @@ export function LocationHeadline({ country }: LocationHeadlineProps) {
   }
 
   return (
-    <h1 className="font-bold text-5xl flex flex-wrap gap-x-2">
+    <h1 className="font-bold text-5xl text-center font-lexend">
       <span className={text_color}>we buy</span>
       <span className={highlight_color}>north east</span>
       <span className={text_color}>cars</span>
