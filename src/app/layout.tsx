@@ -34,6 +34,10 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* Google Analytics Debug */}
+        <script>
+          {`console.log('GA DEBUG: NEXT_PUBLIC_GA_ID is', '${process.env.NEXT_PUBLIC_GA_ID}')`}
+        </script>
         {/* Google Analytics */}
         {process.env.NODE_ENV === 'production' && process.env.NEXT_PUBLIC_GA_ID && (
           <>
@@ -44,12 +48,15 @@ export default async function RootLayout({
                 function gtag(){dataLayer.push(arguments);}
                 gtag('js', new Date());
                 gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');
+                console.log('GA DEBUG: gtag loaded with ID', '${process.env.NEXT_PUBLIC_GA_ID}');
               `}
             </Script>
           </>
         )}
       </head>
       <body className={`min-h-screen ${lexend.variable} ${spaceGrotesk.variable}`}>
+        {/* GA Debug visible element */}
+        <div id="ga-debug" style={{position:'fixed',top:0,left:0,zIndex:9999,background:'#fff',color:'#000',padding:'2px 8px',fontSize:'12px'}}>GA ID: {process.env.NEXT_PUBLIC_GA_ID || 'NOT SET'}</div>
         {children}
       </body>
     </html>
