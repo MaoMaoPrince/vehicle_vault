@@ -22,9 +22,10 @@ export function HeroHeadline({
     theme.typography.heading.h3, 
     'md:' + theme.typography.heading.h2, 
     'lg:text-hero',
-    theme.typography.fontFamily.primary, 
+    'font-lexend',
+    'text-center',
     theme.colors.brand.blue, 
-    'font-bold leading-tight md:whitespace-nowrap mb-3 text-center'
+    'font-bold leading-tight md:whitespace-nowrap mb-3'
   ),
   subtextClassName = cn(
     theme.typography.body.lead, 
