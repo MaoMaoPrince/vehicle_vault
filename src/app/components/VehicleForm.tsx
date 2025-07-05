@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useCallback, useRef } from 'react'
+import React, { useState, useCallback, useRef, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { AnimatePresence } from 'framer-motion'
 import ReactCanvasConfetti from 'react-canvas-confetti'
@@ -287,6 +287,7 @@ export function VehicleForm({ country }: VehicleFormProps) {
             {step === 4 && (
               <Step4ThankYou
                 referenceId={referenceId}
+                country={localCountry}
               />
             )}
           </AnimatePresence>

@@ -8,6 +8,7 @@ import { motion } from 'framer-motion'
 import { fadeVariants } from '@/app/utils/animations'
 import { styles } from '@/app/components/ui/styles'
 import { plateConfigs } from '@/app/config/plate-config'
+import { gtagEvent } from '@/app/utils/gtag'
 
 interface FormData {
   registration: string
@@ -53,7 +54,25 @@ export function Step1Form({
       <div className={styles.container.formControls}>
         <RegInput 
           value={watch('registration')} 
-          onChange={(value) => setValue('registration', value)} 
+          onChange={(value) => {
+            setValue('registration', value)
+            if (typeof window !== 'undefined') {
+              gtagEvent({
+                action: 'field_change',
+                category: 'Form',
+                label: 'registration',
+              })
+            }
+          }} 
+          onFocus={() => {
+            if (typeof window !== 'undefined') {
+              gtagEvent({
+                action: 'field_focus',
+                category: 'Form',
+                label: 'registration',
+              })
+            }
+          }}
           country={country}
         />
         <div className="relative w-full">
@@ -66,6 +85,24 @@ export function Step1Form({
             {...register('mileage', { required: true })}
             className={styles.input.base}
             style={{ minWidth: 0 }}
+            onFocus={() => {
+              if (typeof window !== 'undefined') {
+                gtagEvent({
+                  action: 'field_focus',
+                  category: 'Form',
+                  label: 'mileage',
+                })
+              }
+            }}
+            onChange={e => {
+              if (typeof window !== 'undefined') {
+                gtagEvent({
+                  action: 'field_change',
+                  category: 'Form',
+                  label: 'mileage',
+                })
+              }
+            }}
           />
         </div>
         {apiError && (

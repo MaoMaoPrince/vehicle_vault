@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import { VehicleForm } from './components/VehicleForm'
 import './styles/fonts.css'
 import { cookies } from 'next/headers'
@@ -21,14 +22,16 @@ export default async function Page({ searchParams }: any) {
         <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             <div className="flex-shrink-0">
-              <Image
-                src={logoSrc}
-                alt="logo"
-                width={180}
-                height={60}
-                className="h-12 w-auto"
-                priority
-              />
+              <Link href="/">
+                <Image
+                  src={logoSrc}
+                  alt="logo"
+                  width={120}
+                  height={40}
+                  className="h-8 w-auto"
+                  priority
+                />
+              </Link>
             </div>
           </div>
         </div>

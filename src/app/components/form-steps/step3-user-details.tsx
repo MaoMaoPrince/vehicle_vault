@@ -5,6 +5,7 @@ import { fadeVariants } from '@/app/utils/animations'
 import { User, Mail, Phone, MapPin } from 'lucide-react'
 import { UseFormRegister } from 'react-hook-form'
 import { styles } from '@/app/components/ui/styles'
+import { gtagEvent } from '@/app/utils/gtag'
 
 interface FormData {
   registration: string
@@ -50,6 +51,24 @@ export function Step3UserDetails({
             placeholder="Name"
             {...register('name', { required: true })}
             className={styles.input.base}
+            onFocus={() => {
+              if (typeof window !== 'undefined') {
+                gtagEvent({
+                  action: 'field_focus',
+                  category: 'Form',
+                  label: 'name',
+                })
+              }
+            }}
+            onChange={e => {
+              if (typeof window !== 'undefined') {
+                gtagEvent({
+                  action: 'field_change',
+                  category: 'Form',
+                  label: 'name',
+                })
+              }
+            }}
           />
         </div>
 
@@ -62,6 +81,24 @@ export function Step3UserDetails({
             placeholder="Email"
             {...register('email', { required: true })}
             className={styles.input.base}
+            onFocus={() => {
+              if (typeof window !== 'undefined') {
+                gtagEvent({
+                  action: 'field_focus',
+                  category: 'Form',
+                  label: 'email',
+                })
+              }
+            }}
+            onChange={e => {
+              if (typeof window !== 'undefined') {
+                gtagEvent({
+                  action: 'field_change',
+                  category: 'Form',
+                  label: 'email',
+                })
+              }
+            }}
           />
         </div>
 
@@ -74,6 +111,24 @@ export function Step3UserDetails({
             placeholder="Phone Number"
             {...register('phone', { required: true })}
             className={styles.input.base}
+            onFocus={() => {
+              if (typeof window !== 'undefined') {
+                gtagEvent({
+                  action: 'field_focus',
+                  category: 'Form',
+                  label: 'phone',
+                })
+              }
+            }}
+            onChange={e => {
+              if (typeof window !== 'undefined') {
+                gtagEvent({
+                  action: 'field_change',
+                  category: 'Form',
+                  label: 'phone',
+                })
+              }
+            }}
           />
         </div>
 
@@ -86,6 +141,24 @@ export function Step3UserDetails({
             placeholder="Post Code"
             {...register('postcode', { required: true })}
             className={styles.input.base}
+            onFocus={() => {
+              if (typeof window !== 'undefined') {
+                gtagEvent({
+                  action: 'field_focus',
+                  category: 'Form',
+                  label: 'postcode',
+                })
+              }
+            }}
+            onChange={e => {
+              if (typeof window !== 'undefined') {
+                gtagEvent({
+                  action: 'field_change',
+                  category: 'Form',
+                  label: 'postcode',
+                })
+              }
+            }}
           />
         </div>
         

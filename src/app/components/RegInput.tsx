@@ -7,9 +7,10 @@ interface RegInputProps {
   value?: string
   onChange?: (value: string) => void
   country: string
+  onFocus?: () => void
 }
 
-export function RegInput({ value, onChange, country }: RegInputProps) {
+export function RegInput({ value, onChange, country, onFocus }: RegInputProps) {
   const config = plateConfigs[country] || plateConfigs['GB']
   const [isValid, setIsValid] = useState(true)
   const [isFocused, setIsFocused] = useState(false)
@@ -23,6 +24,7 @@ export function RegInput({ value, onChange, country }: RegInputProps) {
   const handleFocus = () => {
     setIsFocused(true)
     onChange?.('')
+    onFocus?.()
   }
 
   const handleBlur = () => {

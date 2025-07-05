@@ -14,20 +14,24 @@ export function LocationHeadline({ country }: LocationHeadlineProps) {
 
   if (country === 'IE') {
     return (
-      <h1 className="font-bold text-5xl text-center font-lexend">
-        <span className={text_color}>we buy</span>
-        <span className={highlight_color}>Ireland</span>
-        <span className={text_color}>cars</span>
-      </h1>
+      <div className="flex flex-col items-center justify-center w-full">
+        <h1 className="font-bold text-5xl text-center font-lexend w-full">
+          <span className={text_color}>we buy </span>
+          <span className={highlight_color}>ireland </span>
+          <span className={text_color}>cars</span>
+        </h1>
+      </div>
     )
   }
 
   return (
-    <h1 className="font-bold text-5xl text-center font-lexend">
-      <span className={text_color}>we buy</span>
-      <span className={highlight_color}>north east</span>
-      <span className={text_color}>cars</span>
-    </h1>
+    <div className="flex flex-col items-center justify-center w-full">
+      <h1 className="font-bold text-5xl text-center font-lexend w-full">
+        <span className={text_color}>we buy </span>
+        <span className={highlight_color}>north east </span>
+        <span className={text_color}>cars</span>
+      </h1>
+    </div>
   )
 }
 // No static content needed for this component. 

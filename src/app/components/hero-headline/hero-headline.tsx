@@ -1,11 +1,12 @@
 import { cn } from '@/app/components/ui/styles'
 import { theme } from '@/app/styles/theme'
+import type { ReactNode } from 'react'
 
 interface HeroHeadlineProps {
-  textStart: string
-  textHighlight: string
-  textEnd: string
-  textHighlight2?: string
+  textStart: ReactNode
+  textHighlight: ReactNode
+  textEnd: ReactNode
+  textHighlight2?: ReactNode
   subtext?: string
   textClassName?: string
   subtextClassName?: string
@@ -19,9 +20,7 @@ export function HeroHeadline({
   textHighlight2,
   subtext,
   textClassName = cn(
-    theme.typography.heading.h3, 
-    'md:' + theme.typography.heading.h2, 
-    'lg:text-hero',
+    'text-3xl md:text-5xl lg:text-6xl',
     'font-lexend',
     'text-center',
     theme.colors.brand.blue, 
