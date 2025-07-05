@@ -8,8 +8,9 @@ export default async function Page({ searchParams }: any) {
   const countryCookie = cookiesStore.get('country')?.value || 'GB'
   // Use ?loc= param if present
   let urlCountry = countryCookie
-  if (searchParams?.loc && typeof searchParams.loc === 'string') {
-    urlCountry = searchParams.loc.toUpperCase()
+  const params = await searchParams
+  if (params?.loc && typeof params.loc === 'string') {
+    urlCountry = params.loc.toUpperCase()
   }
   const logoSrc = '/logo.svg'
   return (

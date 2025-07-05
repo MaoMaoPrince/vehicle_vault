@@ -1,8 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function middleware(request: NextRequest) {
+  console.log('🔍 Middleware running for:', request.url)
+  
   // Get IP address from x-forwarded-for header (standard in Next.js middleware)
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || ''
+  console.log('🌐 IP detected:', ip)
+  
   let country = 'GB' // Default to GB
 
   if (ip && ip !== '::1' && ip !== '127.0.0.1') {
@@ -18,6 +22,7 @@ export async function middleware(request: NextRequest) {
     }
   }
 
+  console.log('🏳️ Country set to:', country)
   const response = NextResponse.next()
   response.cookies.set('country', country, { path: '/' })
   return response

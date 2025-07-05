@@ -35,26 +35,17 @@ export default async function RootLayout({
     <html lang="en">
       <head>
         {/* Google Analytics */}
-        {process.env.NODE_ENV === 'production' && (
+        {process.env.NODE_ENV === 'production' && process.env.NEXT_PUBLIC_GA_ID && (
           <>
-            <Script
-              strategy="afterInteractive"
-              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
-            />
-            <Script
-              id="ga-init"
-              strategy="afterInteractive"
-              dangerouslySetInnerHTML={{
-                __html: `
-                  window.dataLayer = window.dataLayer || [];
-                  function gtag(){dataLayer.push(arguments);}
-                  gtag('js', new Date());
-                  gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}', {
-                    page_path: window.location.pathname,
-                  });
-                `,
-              }}
-            />
+            <script async src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}></script>
+            <Script id="ga-init" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');
+              `}
+            </Script>
           </>
         )}
       </head>
